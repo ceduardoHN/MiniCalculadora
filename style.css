@@ -64,14 +64,12 @@ html,body {
   border-radius: 55px;
 }
 
-.operation,
-.equal {
+.operation,.equal {
   background-color: #ee6c4d;
   color: #ffffff;
 }
 
-.operation:hover,
-.equal:hover {
+.operation:hover,.equal:hover {
   background-color: #ffffff;
   color: #ee6c4d;
 }
