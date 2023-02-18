@@ -1,3 +1,8 @@
+/* memory */
+let memory=[];
+let activeOperation=null;
+let prevOperation=null;
+
 /* display */
 //const display=document.getElementById("display"); este es menos recomendable que la linea 3
 const display=document.querySelector("div#display");
@@ -50,6 +55,12 @@ const numbers=[zero,one,two,three,four,five,six,seven,eigth,nine];
 numbers.forEach((n,i) => n.addEventListener("click",()=>numberHandler(i)));
 
 const numberHandler=(n)=> {
+    if(prevOperation!==null){
+        setUnselectedOperation(prevOperation);
+        display.innerHTML="";
+        activeOperation=null;
+
+    }
     ac.innerHTML="C";
     const currDisplay=display.innerHTML;
     let newDisplay=`${currDisplay}${n}`;
@@ -71,11 +82,41 @@ const operators=[
     {elmnt: sum,op:"+"},
     {elmnt: sub,op:"-"}
 ];
-operators.forEach((oper)=>oper.elmnt.addEventListener("click",()=>operationHandler(oper.op)));
+operators.forEach((oper)=>oper.elmnt.addEventListener("click",()=>operationHandler(oper.op,oper.elmnt)));
 
-const operationHandler=(op)=>{
-    
+const operationHandler=(operator,opElmnt)=>{
+    setSelectedOperation(opElmnt);
+    const currDisplay=display.innerHTML;
+
+    if(memory.length===0){
+        memory.push(currDisplay);
+    }
+    if(memory.length>1){
+        equalHandler();
+        memory.push(Number(display.innerHTML));
+    }
+    memory.push(operator);
+    activeOperation=opElmnt;
+    prevOperation=opElmnt;
+};
+
+const setSelectedOperation=(elmtOperator)=>{
+    elmtOperator.style.backgroundColor="#ffffff";
+    elmtOperator.style.color="#ee6c4d";
+};
+const setUnselectedOperation=(elmtOperator)=>{
+    elmtOperator.style.backgroundColor="#ee6c4d";
+    elmtOperator.style.color="#ffffff";
 };
 
 /* equal */
 const equal=document.querySelector("div#equal");
+equal.addEventListener("click",()=>equalHandler());
+
+const equalHandler=()=>{
+    const operation=`${memory.join(" ")} ${Number(display.innerHTML)}`;
+    display.innerHTML=`${eval(operation)}`;
+    memory=[];
+    activeOperation=null;
+    prevOperation=null;
+};
