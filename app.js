@@ -29,6 +29,10 @@ percent.addEventListener("click",()=>{
 
 /* dot */
 const dot=document.querySelector("div#dot");
+dot.addEventListener("click",()=>{
+    const currDisplay=display.innerHTML;
+    display.innerHTML=`${Number(currDisplay)}.`;
+});
 
 /* numbers */
 const zero=document.querySelector("div#zero");
