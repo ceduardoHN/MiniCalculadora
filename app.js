@@ -4,14 +4,17 @@ let activeOperation=null;
 let prevOperation=null;
 
 /* display */
-//const display=document.getElementById("display"); este es menos recomendable que la linea 3
 const display=document.querySelector("div#display");
+//const display=document.getElementById("display"); este es menos recomendable que la linea 3
 
 /* ac */
 const ac=document.querySelector("div#ac");
 ac.addEventListener("click",()=>{
     ac.innerHTML="AC";
     display.innerHTML="0";
+    memory=[];
+    activeOperation=null;
+    prevOperation=null;
 });
 
 /* sig */
@@ -58,9 +61,10 @@ numbers.forEach((n,i) => n.addEventListener("click",()=>numberHandler(i)));
 const numberHandler=(n)=> {
     if(prevOperation!==null){
         setUnselectedOperation(prevOperation);
-        display.innerHTML="";
-        activeOperation=null;
-
+        if(activeOperation!==null){
+            display.innerHTML="";
+            activeOperation=null;            
+        }
     }
     ac.innerHTML="C";
     const currDisplay=display.innerHTML;
@@ -86,8 +90,9 @@ const operators=[
 operators.forEach((oper)=>oper.elmnt.addEventListener("click",()=>operationHandler(oper.op,oper.elmnt)));
 
 const operationHandler=(operator,opElmnt)=>{
+    //setUnselectedOperation(prevOperation);
     setSelectedOperation(opElmnt);
-    const currDisplay=display.innerHTML;
+    const currDisplay=display.innerHTML;    
 
     if(memory.length===0){
         memory.push(currDisplay);
@@ -119,5 +124,4 @@ const equalHandler=()=>{
     display.innerHTML=`${eval(operation)}`;
     memory=[];
     activeOperation=null;
-    prevOperation=null;
 };
